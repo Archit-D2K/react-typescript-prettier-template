@@ -1,0 +1,54 @@
+# Ensure consistent line endings across platforms
+* text=auto eol=lf
+
+# Normalize line endings for specific file types
+*.sh text eol=lf
+*.py text eol=lf
+*.js text eol=lf
+*.ts text eol=lf
+*.html text eol=lf
+*.css text eol=lf
+*.md text eol=lf
+*.txt text eol=lf
+
+# Binary files should not be modified
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.pdf binary
+*.zip binary
+*.gz binary
+*.tar binary
+*.jar binary
+*.class binary
+
+# Platform-specific files
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# Ensure executable scripts retain their permissions
+*.sh text eol=lf
+*.py text eol=lf
+
+# Handle Windows-specific files
+*.sln text eol=crlf
+*.csproj text eol=crlf
+*.vcxproj text eol=crlf
+
+# Handle macOS-specific files
+*.DS_Store binary
+
+# Handle Linux-specific files
+*.sh text eol=lf
+
+# Prevent CRLF issues in Git
+*.gitattributes text eol=lf
+*.gitignore text eol=lf
+*.gitmodules text eol=lf
+
+# Ensure that files are checked out with the correct line endings on Windows
+[attr]windows -text
+*.bat windows
+*.cmd windows

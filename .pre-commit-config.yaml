@@ -1,0 +1,59 @@
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+
+exclude: 'node_modules|.git'
+default_stages: [pre-commit]
+fail_fast: false
+
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: check-case-conflict
+      - id: check-executables-have-shebangs
+      - id: check-merge-conflict
+      - id: check-symlinks
+      - id: trailing-whitespace
+        exclude: ".*json$|.*txt$|.*csv|.*md"
+      - id: no-commit-to-branch
+        args: [--branch, master, --branch, main]
+      - id: check-ast
+      - id: end-of-file-fixer
+        exclude_types: [svg]
+      - id: check-added-large-files
+      - id: debug-statements
+      - id: requirements-txt-fixer
+      - id: mixed-line-ending
+        args: [ --fix=lf ]
+
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.9.1
+    hooks:
+      - id: ruff
+        args: [ --fix ]
+      - id: ruff-format
+
+  - repo: local
+    hooks:
+      - id: eslint
+        name: Run ESLint on staged frontend files
+        entry: >
+          sh -c 'cd frontend &&
+          files=$(git diff --name-only --cached --relative | grep -E "\.(js|jsx|ts|tsx)$" || true) &&
+          if [ -n "$files" ]; then echo "$files" | xargs npx eslint --fix; fi'
+        language: system
+        pass_filenames: false
+        stages: [pre-commit]
+        files: frontend/.*$
+
+      - id: prettier
+        name: Run Prettier on staged frontend files
+        entry: >
+          sh -c 'cd frontend &&
+          files=$(git diff --name-only --cached --relative | grep -E "\.(js|jsx|ts|tsx|json|css|md)$" || true) &&
+          if [ -n "$files" ]; then echo "$files" | xargs npx prettier --write; fi'
+        language: system
+        pass_filenames: false
+        stages: [pre-commit]
+        files: frontend/.*$
